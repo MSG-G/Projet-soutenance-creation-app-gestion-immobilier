@@ -1,7 +1,7 @@
 ﻿# Projet-soutenance-creation-app-gestion-immobilier
-# 🏘️ ImmoManager - Application Web de Gestion Immobilière
+# 🏘️ Dev-Immo - Application Web de Gestion Immobilière
 
-ImmoManager est une application web moderne développée avec Laravel et Postgres, permettant la gestion des biens immobiliers, des utilisateurs (clients, agents, administrateurs), des réservations, des transactions (vente/location) et des contrats. Elle offre également un système de messagerie interne et un tableau de bord statistique.
+Dev-Immo est une application web moderne développée avec Laravel et Postgres, permettant la gestion des biens immobiliers, des utilisateurs (clients, agents, administrateurs), des réservations, des transactions (vente/location) et des contrats. Elle offre également un système de messagerie interne et un tableau de bord statistique.
 
 ---
 
