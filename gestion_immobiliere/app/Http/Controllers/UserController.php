@@ -1,22 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
     public function index()
     {
         $users = User::all();
-        return view('users.index', compact('users'));
-    }
-
-    public function create()
-    {
-        return view('users.create');
+        return response()->json($users);
     }
 
     public function store(Request $request)
@@ -28,19 +25,19 @@ class UserController extends Controller
             'role' => 'required|in:client,agent,admin',
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => $request->role,
         ]);
 
-        return redirect()->route('users.index')->with('success', 'Utilisateur créé.');
+        return response()->json($user, 201);
     }
 
-    public function edit(User $user)
+    public function show(User $user)
     {
-        return view('users.edit', compact('user'));
+        return response()->json($user);
     }
 
     public function update(Request $request, User $user)
@@ -53,12 +50,38 @@ class UserController extends Controller
 
         $user->update($request->only(['name', 'email', 'role']));
 
-        return redirect()->route('users.index')->with('success', 'Utilisateur mis à jour.');
+        return response()->json($user);
     }
 
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect()->route('users.index')->with('success', 'Utilisateur supprimé.');
+        return response()->json(null, 204);
+    }
+
+    public function login(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string',
+        ]);
+
+        $credentials = $request->only('email', 'password');
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+            $token = $user->createToken('auth_token')->plainTextToken;
+            return response()->json(['token' => $token, 'user' => $user]);
+        }
+
+        return response()->json(['error' => 'Identifiants incorrects'], 401);
+    }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+        $users = User::where('name', 'like', "%$query%")
+            ->orWhere('email', 'like', "%$query%")
+            ->get();
+        return response()->json($users);
     }
 }

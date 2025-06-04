@@ -2,79 +2,60 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'role',
+        'name', 'email', 'password', 'role', 'phone',
     ];
-    public function biens()
-    {
-        return $this->hasMany(Bien::class, 'agent_id'); // si tu l’ajoutes plus tard
-    }
 
-    public function isClient()
-    {
-        return $this->role === 'client';
-    }
-
-    public function isAgent()
-    {
-        return $this->role === 'agent';
-    }
-
-    public function isAdmin()
-    {
-        return $this->role === 'admin';
-    }
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
-        'password',
-        'remember_token',
+        'password', 'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
+
+    public function reservationsAsClient()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
-    // Un utilisateur (client ou agent) peut faire plusieurs visites
-    public function visites()
-    {
-        return $this->hasMany(Visite::class);
+        return $this->hasMany(Reservation::class, 'client_id');
     }
 
-// Un agent peut avoir plusieurs transactions si applicable
-    public function transactions()
+    public function reservationsAsAgent()
     {
-        return $this->hasMany(Transaction::class);
+        return $this->hasMany(Reservation::class, 'agent_id');
     }
 
+    public function contratsAsClient()
+    {
+        return $this->hasMany(Contrat::class, 'client_id');
+    }
+
+    public function contratsAsAgent()
+    {
+        return $this->hasMany(Contrat::class, 'agent_id');
+    }
+
+    public function messagesSent()
+    {
+        return $this->hasMany(Message::class, 'expediteur_id');
+    }
+
+    public function messagesReceived()
+    {
+        return $this->hasMany(Message::class, 'destinataire_id');
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
 }
