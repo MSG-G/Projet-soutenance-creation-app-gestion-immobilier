@@ -9,7 +9,11 @@ class Ville extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nom'];
+    protected $fillable = [
+        'nom',
+        'region',
+        'code_postal'
+    ];
 
     public function biens()
     {
