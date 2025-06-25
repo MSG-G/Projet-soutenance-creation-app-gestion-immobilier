@@ -1,0 +1,440 @@
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: #fff;
+  color: #111;
+}
+
+/* NAVBAR */
+.navbar {
+  width: 1350.128662109375;
+height: 111.62318420410156;
+top: -0.31px;
+left: 90px;
+
+}
+.logo img {
+  height: 120px;
+  width: auto;
+}
+
+.navbar ul {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+}
+/* NAVBAR GÉNÉRALE */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  background-color: #ffffff; /* couleur de fond */
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* effet ombre légère */
+}
+
+/* LOGO */
+
+
+/* NAVIGATION */
+nav {
+  display: flex;
+  align-items: center;
+  gap: 40px; /* espace entre ul et .actions */
+}
+
+/* LIENS DU MENU */
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  padding: 0;
+  margin: 0;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+/* ACTIONS : Connexion / Inscription */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.actions a {
+  text-decoration: none;
+  color: #555;
+}
+
+.actions button {
+  padding: 8px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: #000;
+  font-weight: 500;
+}
+
+.navbar .actions button {
+  padding: 8px 16px;
+  background-color: transparent;
+  border: 1px solid #053AFF;
+  color: #053AFF;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 95.12860107421875;
+height: 35.386043548583984;
+top: 15px;
+left: 1345px;
+border-width: 3px;
+border-radius: 100px;
+padding-top: 16px;
+padding-right: 32px;
+padding-bottom: 16px;
+padding-left: 32px;
+gap: 10px;
+
+}
+
+/* HERO SECTION */
+.hero {
+  text-align: center;
+  padding: 50px 5%;
+  
+  
+}
+
+.hero-content h1 {
+    font-size: 48px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 20px;
+  font-family: 'Poppins', sans-serif; /* adapte selon la police de ta maquette */
+
+
+}
+
+.hero-content .highlight {
+  color: #053AFF;
+  font-weight: bold;
+  
+}
+
+.cta {
+  margin-top: 20px;
+  background-color: #053AFF;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 0;
+  font-size: 1rem;
+}
+
+/* SECTION CLIENTS */
+.clients {
+  background-color: #000;
+  color: white;
+  padding: 40px 5%;
+  text-align: center;
+}
+
+.clients h2 {
+  color: #00d1d1;
+  margin-bottom: 20px;
+}
+
+.clients .objectif {
+  color: #00d1d1;
+  font-weight: bold;
+}
+
+
+
+.images-diagonales {
+  .images-diagonales {
+  position: relative;
+  z-index: 1;
+}
+.images-diagonales img {
+  position: relative;
+  z-index: 2;
+}
+
+  padding: 60px 0 40px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.images-diagonales img {
+  flex: 1; /* Les images prennent toute la largeur disponible */
+  max-width: calc(100% / 7); /* Si tu as 7 images — adapte si tu en as plus ou moins */
+  height: 280px;
+  object-fit: cover;
+  margin: 0 -10px;
+  border: 4px solid #fff;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+  transition: transform 0.3s ease, z-index 0.3s;
+  transform: translateY(30px) rotate(-6deg);
+  z-index: 1;
+}
+
+.images-diagonales img:nth-child(even) {
+  transform: translateY(30px) rotate(6deg);
+}
+
+/* Image du milieu mise en avant */
+.images-diagonales img:nth-child(4) {
+  height: 330px;
+  transform: translateY(10px) rotate(0deg);
+  z-index: 3;
+}
+
+/* Hover */
+.images-diagonales img:hover {
+  transform: scale(1.05) translateY(0) rotate(0deg);
+  z-index: 4;
+}
+.images-diagonales::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50%; /* moitié inférieure */
+  background: black; /* la couleur de fond souhaitée */
+  z-index: 0;
+}
+.images-diagonales img {
+  flex: 1;
+  max-width: calc(100% / 7); /* si tu as 7 images, adapte selon ton cas */
+  height: 200px; /* moins long qu'avant */
+  object-fit: cover;
+  margin: 0 -10px;
+  border: 6px solid #fff;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+  transition: transform 0.3s ease, z-index 0.3s;
+  transform: translateY(30px) rotate(-10deg);
+  z-index: 1; 
+}
+.images-diagonales img:nth-child(even) {
+  transform: translateY(30px) rotate(9deg);
+}
+.images-diagonales img:nth-child(4) {
+  height: 225px; /* légèrement plus grande */
+  transform: translateY(40px) rotate(0deg);
+  z-index: 3;
+  width: 220px; 
+}
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f0f0f0;
+}
+.vedette-section {
+  padding: 60px 20px;
+  background-color: #f9f9f9;
+  text-align: center;
+}
+
+.vedette-title {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.vedette-desc {
+  color: #555;
+  font-size: 16px;
+  max-width: 700px;
+  margin: 0 auto 40px;
+}
+
+.highlight {
+  color: #007BFF;
+  font-weight: bold;
+}
+
+.vedette-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  justify-items: center;
+}
+
+.vedette-card {
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+  width: 100%;
+  max-width: 280px;
+}
+
+.vedette-card:hover {
+  transform: translateY(-5px);
+}
+
+.vedette-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.vedette-info {
+  padding: 15px;
+}
+
+.vedette-info h3 {
+  font-size: 18px;
+  margin: 10px 0 5px;
+}
+
+.vedette-info p {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.vedette-prix {
+  display: inline-block;
+  background-color: #000;
+  color: white;
+  padding: 5px 10px;
+  font-size: 13px;
+  border-radius: 5px;
+  margin-bottom: 8px;
+}
+
+.disponible {
+  display: inline-block;
+  margin-top: 10px;
+  color: #007BFF;
+  font-weight: bold;
+  font-size: 14px;
+}
+/* SECTION Vision & Mission */
+.vision-mission {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  padding: 60px 20px;
+  background-color: #ececf5c5;
+}
+
+.vision, .mission {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.vision img, .mission img {
+  max-width: 400px;
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.vision h2, .mission h2 {
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.vision p, .mission p {
+  max-width: 500px;
+  line-height: 1.6;
+}
+
+.highlight {
+  color: #053AFF;
+  font-weight: bold;
+}
+
+/* SECTION Qu’est-ce que tu cherches ? */
+.search-section {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.search-section h4 {
+  color: #053AFF;
+  font-size: 14px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.search-section h2 {
+  font-size: 28px;
+  margin-bottom: 40px; 
+  color: rgba(83, 91, 94, 1);
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.card {
+  background-color: #ffffff;
+  padding: 30px 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  max-width: 300px;
+  flex: 1 1 280px;
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card i {
+  font-size: 30px;
+  color: #007BFF;
+  margin-bottom: 15px;
+}
+
+.card h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.card p {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.card a {
+  color: #007BFF;
+  font-weight: bold;
+  text-decoration: none;
+}
