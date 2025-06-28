@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DEV-IMMO | Agents</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      background-color: #E9E9E9;
+    }
+    .sidebar {
+      width: 240px;
+      background: linear-gradient(to bottom, #2196f3 0px, #999 60px);
+      color: white;
+      height: 100vh;
+      position: fixed;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .sidebar h1 {
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+      font-size: 24px;
+      background-color: #876CFF;
+    }
+    .nav {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      background-color: #713EE8;
+      flex-grow: 1;
+    }
+    .nav li {
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .nav li:hover,
+    .nav li.active {
+      background-color: #C5C5C5;
+    }
+    .nav-bottom {
+      padding: 15px 20px;
+      background-color: #713EE8;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+    .main {
+      margin-left: 240px;
+      flex: 1;
+    }
+    .header {
+      background-color: #fff;
+      padding: 20px;
+      font-size: 22px;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ccc;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      margin: 0;
+    }
+    .section {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      margin: 20px;
+    }
+    .section-title {
+      font-weight: bold;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    table th, table td {
+      border-bottom: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+    }
+    table td:nth-child(2) {
+      text-align: center;
+    }
+    .btn-ajouter {
+      background-color: blue;
+      color: white;
+      padding: 5px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      text-decoration: none;
+    }
+    .btn-tri {
+      color: blue;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .visit-action {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      color: #007bff;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .visit-action i {
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h1>DEV-IMMO</h1>
+    <ul class="nav">
+      <li><img src="ICONES/tab.svg"> Tableau de bord</li>
+      <li class="active"><img src="ICONES/agent.svg"> Agents</li>
+      <li><img src="ICONES/bien.svg"> Biens</li>
+      <li><img src="ICONES/utilisateur.svg"> Utilisateurs</li>
+      <li><img src="ICONES/reservation.svg"> Reservations</li>
+    </ul>
+    <div class="nav-bottom">
+      <img src="ICONES/compte.svg"> Comptes
+    </div>
+  </div>
+  <div class="main">
+    <div class="header">
+      Agents
+      <img src="ICONES/protection.svg">
+    </div>
+
+    <div class="section">
+      <div class="section-title">
+        Ajouter des propriétés
+        <a href="#" class="btn-ajouter">ajouter</a>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Model</th>
+            <th style="text-align: center;">Type</th>
+            <th style="text-align: right;">Statut</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Luxieux Apparts</td>
+            <td>Appartements</td>
+            <td style="text-align: right;"><strong>Disponible</strong></td>
+          </tr>
+          <tr>
+            <td>Urbain Apparts</td>
+            <td>Appartements</td>
+            <td style="text-align: right;"><strong>Disponible</strong></td>
+          </tr>
+          <tr>
+            <td>Modern Apparts</td>
+            <td>Appartements</td>
+            <td style="text-align: right;"><strong>Disponible</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-title">
+        Visites à venir
+        <span class="btn-tri">Tri <i class="fas fa-chevron-down"></i></span>
+      </div>
+      <table>
+        <tbody>
+          <tr>
+            <td>Juin.15.2025</td>
+            <td>Juin</td>
+            <td>
+              <div class="visit-action">
+                Planifier la visite <i class="fas fa-chevron-right"></i>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>Juin.15.2025</td>
+            <td>Juin</td>
+            <td>
+              <div class="visit-action">
+                Planifier la visite <i class="fas fa-chevron-right"></i>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>Juin.15.2025</td>
+            <td>Juin</td>
+            <td>
+              <div class="visit-action">
+                Planifier la visite <i class="fas fa-chevron-right"></i>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

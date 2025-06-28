@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DEV-IMMO | Biens</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      background-color: #E9E9E9;
+    }
+
+    .sidebar {
+      width: 240px;
+      background: linear-gradient(to bottom, #7A3EF2, #A078F2);
+      color: white;
+      height: 100vh;
+      position: fixed;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .sidebar h1 {
+      text-align: center;
+      padding: 20px;
+      font-size: 24px;
+      font-weight: bold;
+      background-color: #876CFF;
+    }
+
+    .nav {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      background-color: #713EE8;
+      flex-grow: 1;
+    }
+    .nav-bottom {
+      padding: 15px 20px;
+      background-color: #713EE8;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+    .nav li{
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+   .nav li:hover,
+    .nav li.active {
+      background-color: #C5C5C5;
+    }
+
+    .main {
+      margin-left: 240px;
+      flex: 1;
+      background: white;
+      min-height: 100vh;
+    }
+
+    .header {
+      padding: 20px;
+      font-size: 24px;
+      font-weight: bold;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .biens-container {
+      padding: 20px;
+      background-color: #f1f1f1;
+    }
+
+    .search-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .search-bar input {
+      flex: 1;
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    .search-bar button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      background-color: #5E3EF2;
+      color: white;
+      cursor: pointer;
+    }
+
+    .filters {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .filters select {
+      flex: 1;
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    .property-card {
+      display: flex;
+      justify-content: space-between;
+      background-color: white;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 15px;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    }
+
+    .property-details {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .property-details img {
+      width: 100px;
+      height: 80px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    .property-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .property-info span {
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .location {
+      font-size: 14px;
+      color: #555;
+    }
+
+    .status {
+      font-size: 14px;
+      font-weight: bold;
+      color: #005BFF;
+    }
+
+    .icon-fav {
+      font-size: 18px;
+      color: #888;
+      cursor: pointer;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h1>DEV-IMMO</h1>
+    <ul class="nav">
+      <li><img src="ICONES/tab.svg"> Tableau de bord</li>
+      <li><img src="ICONES/agent.svg"> Agents</li>
+      <li class="active"><img src="ICONES/bien.svg"> Biens</li>
+      <li><img src="ICONES/utilisateur.svg"> Utilisateurs</li>
+      <li><img src="ICONES/reservation.svg"></i> Reservations</li>
+    </ul>
+    <div class="nav-bottom">
+      <img src="ICONES/compte.svg"></i> Comptes
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="header">
+      Biens
+      <img src="ICONES/protection.svg" style="float: right;">
+    </div>
+
+    <div class="biens-container">
+      <div class="search-bar">
+        <input type="text" placeholder="🔍 Rechercher...">
+        <button>rechercher</button>
+      </div>
+
+      <div class="filters">
+        <select><option>Lieux</option></select>
+        <select><option>Type</option></select>
+        <select><option>Statuts</option></select>
+      </div>
+
+      <div class="property-card">
+        <div class="property-details">
+          <img src="ICONES/luxe.svg">
+          <div class="property-info">
+            <span>Luxieux Apparts</span>
+            <span class="location"><i class="fas fa-map-marker-alt"></i> Thies <br> 800M</span>
+          </div>
+        </div>
+        <div style="text-align: right;">
+          <i class="far fa-heart icon-fav"></i><br>
+          <span class="status">disponible</span>
+        </div>
+      </div>
+
+      <div class="property-card">
+        <div class="property-details">
+          <img src="ICONES/urbain.svg">
+          <div class="property-info">
+            <span>Urbain Apparts</span>
+            <span class="location"><i class="fas fa-map-marker-alt"></i> Saint-Louis <br> 800M</span>
+          </div>
+        </div>
+        <div style="text-align: right;">
+          <i class="far fa-heart icon-fav"></i><br>
+          <span class="status">disponible</span>
+        </div>
+      </div>
+
+      <div class="property-card">
+        <div class="property-details">
+          <img src="ICONES/modern.svg">
+          <div class="property-info">
+            <span>Modern Apparts</span>
+            <span class="location"><i class="fas fa-map-marker-alt"></i> Mbour <br> 800M</span>
+          </div>
+        </div>
+        <div style="text-align: right;">
+          <i class="far fa-heart icon-fav"></i><br>
+          <span class="status">disponible</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

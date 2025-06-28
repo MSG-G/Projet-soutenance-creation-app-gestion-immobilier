@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DEV-IMMO | Tableau de bord</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      background-color: #E9E9E9;
+    }
+    .sidebar {
+      width: 240px;
+      background: linear-gradient(to bottom, #2196f3 0px, #999 60px);
+      color: white;
+      height: 100vh;
+      position: fixed;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .sidebar h1 {
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+      background-color: #876CFF;
+      font-size: 24px;
+    }
+    .nav {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      background-color: #713EE8;
+      flex-grow: 1;
+    }
+    .nav li {
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .nav li:hover,
+    .nav li.active {
+      background-color: #C5C5C5;
+    }
+    .nav-bottom {
+      padding: 15px 20px;
+      background-color: #713EE8;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+    .main {
+      margin-left: 240px;
+      padding: 0;
+      flex: 1;
+    }
+    .header {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 0 0 8px 8px;
+      font-size: 20px;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid #eee;
+    }
+    .header i {
+      font-size: 24px;
+      color: #999;
+    }
+    .stat-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin: 20px;
+    }
+    .stat-box {
+      flex: 1 1 200px;
+      background-color: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .stat-box i {
+      font-size: 28px;
+    }
+    .stat-box div span {
+      display: block;
+    }
+    .row-split {
+      display: flex;
+      gap: 20px;
+      margin: 0 20px 20px 20px;
+    }
+    .row-split .stat-box {
+      flex: 1;
+    }
+    .properties-section {
+      background-color: #fff;
+      padding: 20px;
+      margin: 0 20px 20px 20px;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .section-title {
+      font-weight: bold;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .property-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #E9E9E9;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+    }
+    .property-details {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .property-details img {
+      width: 80px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+    .property-info span {
+      display: block;
+      font-size: 14px;
+    }
+    .property-info .location {
+      color: #555;
+      font-size: 13px;
+    }
+    .status {
+      color: blue;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h1>DEV-IMMO</h1>
+    <ul class="nav">
+      <li class="active"><img src="ICONES/tab.svg"> Tableau de bord</li>
+      <li><img src="ICONES/agent.svg"> Agents</li>
+      <li><img src="ICONES/bien.svg"> Biens</li>
+      <li><img src="ICONES/utilisateur.svg"> Utilisateurs</li>
+      <li><img src="ICONES/reservation.svg"> Reservations</li>
+    </ul>
+    <div class="nav-bottom">
+      <img src="ICONES/compte.svg"> Comptes
+    </div>
+  </div>
+  <div class="main">
+    <div class="header">
+      <span>Tableau de bord Administrateur</span>
+      <img src="ICONES/protection.svg">
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-box">
+        <img src="ICONES/admin.svg">
+        <div>
+          <span>Admins</span>
+          <span>20</span>
+        </div>
+      </div>
+      <div class="stat-box">
+        <img src="ICONES/client.svg">
+        <div>
+          <span>Clients</span>
+          <span>20</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row-split">
+      <div class="stat-box">
+        <img src="ICONES/visite.svg">
+        <div>
+          <span>Visites</span>
+          <span>20</span>
+        </div>
+      </div>
+      <div class="stat-box">
+        <img src="ICONES/approbation.svg">
+        <div>
+          <span>Approbation</span>
+          <span>20</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="properties-section">
+      <div class="section-title">
+        <span><img src="ICONES/récent.svg"> Biens récents</span>
+        <span style="font-size: 12px; background:blue; padding: 2px 8px; border-radius: 12px; color:white;">3 nouveaux</span>
+      </div>
+
+      <div class="property-item">
+        <div class="property-details">
+          <img src="ICONES/luxe.svg">
+          <div class="property-info">
+            <span>Luxieux Apparts</span>
+            <span class="location"><i class="fas fa-map-marker-alt"></i> Thies <br> 800M</span>
+          </div>
+        </div>
+        <span class="status">disponible</span>
+      </div>
+
+      <div class="property-item">
+        <div class="property-details">
+          <img src="ICONES/urbain.svg">
+          <div class="property-info">
+            <span>Urbain Apparts</span>
+            <span class="location"><i class="fas fa-map-marker-alt"></i> Saint-Louis <br> 800M</span>
+          </div>
+        </div>
+        <span class="status">disponible</span>
+      </div>
+
+      <div class="property-item">
+        <div class="property-details">
+          <img src="ICONES/modern.svg">
+          <div class="property-info">
+            <span>Modern Apparts</span>
+            <span class="location"><i class="fas fa-map-marker-alt"></i> Mbour <br> 800M</span>
+          </div>
+        </div>
+        <span class="status">disponible</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
