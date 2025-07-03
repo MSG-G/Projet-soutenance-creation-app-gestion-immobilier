@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+  <script src="https://unpkg.com/feather-icons"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Accueil - Mon agence immo</title>
@@ -144,22 +147,26 @@
   <div class="cards">
     <div class="card">
       <i class="fas fa-building"></i>
+
       <h3>Appartements</h3>
+
       <p>
         Commencez vos recherches d’appartement et trouvez l’endroit idéal où poser vos valises, 
         que ce soit pour un premier achat ou une nouvelle étape de votre vie.
-      </p>
+      </p> 
+      
       <a href="#">Lire plus →</a>
     </div>
     <div class="card">
-      <i class="fas fa-home"></i>
-      <h3>Maisons</h3>
-      <p>
-        Trouvez la maison de vos rêves, un véritable chez-vous où chaque moment devient spécial. 
-        Commencez dès maintenant vos recherches parmi nos nombreuses offres.
-      </p>
-      <a href="#">Lire plus →</a>
-    </div>
+<i class="fas fa-house-chimney"></i>
+  <h3>Maisons</h3>
+  <p>
+    Découvrez nos villas d’exception, des lieux spacieux et élégants pour un confort absolu. 
+    Parcourez nos offres exclusives dès maintenant.
+  </p>
+  <a href="#">Lire plus →</a>
+</div>
+
     <div class="card">
       <i class="fas fa-city"></i>
       <h3>Villa</h3>
@@ -171,8 +178,84 @@
     </div>
   </div>
 </section>
+<section class="villas-vedette">
+  <h2>VEDETTE</h2>
+  <p class="intro-vedette">
+    Découvrez notre sélection de villas d'exception, des lieux uniques où luxe et confort se rencontrent.
+    Trouvez la villa qui correspond à vos aspirations et à votre style de vie.
+  </p>
 
-<a href="login.html">Se connecter</a>
+  <div class="villas-grid">
+    <!-- Grande image qui prend toute la ligne -->
+    <div class="villa-card villa-large">
+      <img src="images/image14.jpg" alt="Villa aux Almadies">
+      <div class="info">
+        <span class="prix">375 millions</span>
+        <h3>Villa aux Almadies</h3>
+        <span class="tag">A VENDRE</span>
+      </div>
+    </div>
+
+    <!-- Deux petites images côte à côte -->
+    <div class="villa-card villa-small">
+      <img src="images/image15.jpg" alt="Penthouse à Mbour">
+      <div class="info">
+        <span class="prix">300 millions</span>
+        <h3>Penthouse de luxe à Mbour</h3>
+        <span class="tag">A VENDRE</span>
+      </div>
+    </div>
+
+    <div class="villa-card villa-small">
+      <img src="images/image16.jpg" alt="Villa à Saly">
+      <div class="info">
+        <span class="prix">8 millions</span>
+        <h3>Villa à Saly</h3>
+        <span class="tag">A VENDRE</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="voir-plus">
+    <button>Voir +</button>
+  </div>
+</section>
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-col logo-footer">
+      <img src="images/logo.jpg" alt="Logo Dev-Immo" style="height: 40px;">
+      <p>Embarquez pour un voyage de découverte avec un aperçu complet. Plongez dans notre engagement envers l’excellence</p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Liens Utiles</h4>
+      <ul>
+        <li><a href="#">Accueil</a></li>
+        <li><a href="#">Biens</a></li>
+        <li><a href="#">À Propos</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Entrer en Contact</h4>
+      <p>📍 Avenue Galandou Diouf</p>
+      <p>📞 +221 33 820 67 70</p>
+      <p>📧 contact.devimmo@gmail.com</p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Newsletter</h4>
+      <input type="email" placeholder="Votre Email">
+      <button>Envoyé</button>
+    </div>
+  </div>
+</footer>
+<a href="login.html"></a>
+<script>
+  feather.replace();
+</script>
 
 </body>
 </html>
