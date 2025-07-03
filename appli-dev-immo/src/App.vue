@@ -1,11 +1,11 @@
-<script setup>
-</script>
-
 <template>
-  
-  
+  <router-view />
 </template>
 
-<style scoped>
+<script setup>
+// rien à importer ici maintenant
+</script>
 
+<style scoped>
+/* Plus rien ici pour l'instant */
 </style>
