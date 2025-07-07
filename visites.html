@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Visites à venir</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body {
+      display: flex;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: #0000ff; /* bleu vif */
+      color: white;
+      padding-top: 20px;
+    }
+
+    .sidebar h4 {
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 40px;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 15px 20px;
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .sidebar a:hover, .sidebar .active {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .content {
+      flex: 1;
+      padding: 30px;
+      background-color: #f8f9fa;
+    }
+
+    .table-wrapper {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .table thead {
+      background-color: #f1f1f1;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+      }
+
+      .content {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <h4>DEV-IMMO</h4>
+    <a href="biens.html">Mes biens</a>
+    <a href="reserv.html">Réservation</a>
+    <a href="#" class="active">Visites</a>
+  </div>
+
+  <div class="content">
+    <h5 class="mb-4 fw-bold">Visites à venir</h5>
+
+    <div class="table-wrapper">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h6>Visites à venir</h6>
+        <button class="btn btn-outline-secondary btn-sm">Tri <i class="bi bi-filter"></i></button>
+      </div>
+
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Mois</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td></td>
+            <td></td>
+            <td><button class="btn btn-outline-primary btn-sm">Planifier la visite</button></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td><button class="btn btn-outline-primary btn-sm">Planifier la visite</button></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td><button class="btn btn-outline-primary btn-sm">Planifier la visite</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</body>
+</html>
