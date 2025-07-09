@@ -1,4 +1,5 @@
 <template>
+ ely-diawara/Authentification
   <div class="app">
     <nav v-if="false">
       <router-link to="/login">Connexion</router-link> |
@@ -13,3 +14,14 @@
     </main>
   </div>
 </template>
+
+  
+
+<script setup>
+// rien à importer ici maintenant
+</script>
+
+<style scoped>
+/* Plus rien ici pour l'instant */
+</style>
+
