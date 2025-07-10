@@ -1,7 +1,14 @@
-// router/index.js
+// src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router'
-import { useUserStore } from '../stores/user' //pour la redirection
-// Importation des pages de views et layouts
+import { useUserStore } from '../stores/user'
+
+// Pages d'authentification
+import Login from '../views/Login.vue'
+import Register from '../views/Register.vue'
+import ForgotPassword from '../views/ForgotPassword.vue'
+import Contact from '../views/Contact.vue'
+
+// Layouts et dashboards
 import AdminLayout from '../Layouts/AdminLayout.vue'
 import TableauBord from '../views/TableauBord.vue'
 import AgentDashAdmin from '../views/AgentDashAdmin.vue'
@@ -20,15 +27,22 @@ const routes = [
     redirect: () => {
       const user = JSON.parse(localStorage.getItem('user'))
 
-      if (!user) return '/agent/biens' // par défaut
+      if (!user) return '/login' // Redirige vers login si non connecté
 
       if (user.role === 'admin') return '/admin/tableaubord'
       if (user.role === 'agent') return '/agent/biens'
 
-      return '/agent/biens'
+      return '/login'
     }
   },
 
+  // Routes d'authentification
+  { path: '/login', component: Login },
+  { path: '/register', component: Register },
+  { path: '/forgot-password', component: ForgotPassword },
+  { path: '/contact', component: Contact },
+
+  // Admin
   {
     path: '/admin',
     component: AdminLayout,
@@ -42,6 +56,7 @@ const routes = [
     ]
   },
 
+  // Agent
   {
     path: '/agent',
     component: AgentLayout,
@@ -53,18 +68,17 @@ const routes = [
   }
 ]
 
-// Créer le routeur
 const router = createRouter({
   history: createWebHistory(),
   routes
 })
 
-//  Ajout de guard après avoir créé le router
+// Guard pour la sécurité selon le rôle
 router.beforeEach((to, from, next) => {
   const userStore = useUserStore()
   const user = userStore.user
 
-  if (!user) return next() // autorise tout si l'utilisateur n'est pas encore défini
+  if (!user) return next() // Autorise la navigation tant que l’utilisateur n’est pas défini
 
   if (to.path.startsWith('/admin') && user.role !== 'admin') {
     return next('/agent/biens')

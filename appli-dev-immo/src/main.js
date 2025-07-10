@@ -1,12 +1,12 @@
+// src/main.js
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import { createPinia } from 'pinia'
-
 import '@fortawesome/fontawesome-free/css/all.min.css'
 
 // Simuler un user connecté (pour test)
-localStorage.setItem('user', JSON.stringify({ nom: 'Coumba', role: 'admin' })) // ou 'agent'
+localStorage.setItem('user', JSON.stringify({ nom: '', role: '' })) // 
 
 const app = createApp(App)
 
