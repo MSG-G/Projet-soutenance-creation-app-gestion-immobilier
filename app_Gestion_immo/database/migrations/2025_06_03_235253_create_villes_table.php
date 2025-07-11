@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('villes', function (Blueprint $table) {
             $table->id();
             $table->string('nom')->unique();
-            $table->string('region')->unique();
+            $table->string('region');
             $table->string('code_postal')->nullable();
             $table->timestamps();
         });

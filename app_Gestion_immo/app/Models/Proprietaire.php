@@ -9,7 +9,13 @@ class Proprietaire extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nom', 'email', 'telephone', 'adresse'];
+    protected $fillable = [
+        'nom',
+        'prenom',
+        'email',
+        'telephone',
+        'adresse'
+    ];
 
     public function biens()
     {
