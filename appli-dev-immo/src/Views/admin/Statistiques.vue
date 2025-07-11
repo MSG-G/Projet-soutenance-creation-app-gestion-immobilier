@@ -84,9 +84,9 @@
 
 <script setup>
 import { ref } from 'vue'
-import StatCard from '../components/StatCard.vue'
-import ChartBox from '../components/ChartBox.vue'
-import ListingCard from '../components/ListingCard.vue'
+import StatCard from '@/components/StatCard.vue'
+import ChartBox from '@/components/ChartBox.vue'
+import ListingCard from '@/components/ListingCard.vue'
 
 const statCards = ref([
   { titre: "Total Propriétés", valeur: "", variation: "", type: "danger" },

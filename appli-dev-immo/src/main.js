@@ -6,7 +6,7 @@ import { createPinia } from 'pinia'
 import '@fortawesome/fontawesome-free/css/all.min.css'
 
 // Simuler un user connecté (pour test)
-localStorage.setItem('user', JSON.stringify({ nom: '', role: '' })) // 
+localStorage.setItem('user', JSON.stringify({ nom: 'coumba', role: '' })) // 
 
 const app = createApp(App)
 

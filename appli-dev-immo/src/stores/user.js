@@ -1,8 +1,14 @@
 import { defineStore } from 'pinia'
 
+function getValidUser() {
+  const user = JSON.parse(localStorage.getItem('user'))
+  if (!user || !user.role) return null
+  return user
+}
+
 export const useUserStore = defineStore('user', {
   state: () => ({
-    user: JSON.parse(localStorage.getItem('user')) || null
+    user: getValidUser()
   }),
   actions: {
     setUser(user) {

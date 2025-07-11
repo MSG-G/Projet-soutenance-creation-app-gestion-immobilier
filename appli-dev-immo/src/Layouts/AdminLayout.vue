@@ -16,8 +16,8 @@
 </template>
 
 <script setup>
-import SidebarDash from "../components/SidebarDash.vue"
-import HeaderDash from "../components/HeaderDash.vue"
+import SidebarDash from '@/components/SidebarDash.vue'
+import HeaderDash from '@/components/HeaderDash.vue'
 </script>
 
 <style scoped>
