@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DEV-IMMO | Utilisateurs</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      background-color: #E9E9E9;
+    }
+
+    .sidebar {
+      width: 240px;
+      background: blue;
+      color: white;
+      height: 100vh;
+      position: fixed;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .sidebar h1 {
+      text-align: center;
+      padding: 20px;
+      margin: 0;
+      background-color: #876CFF;
+      font-size: 24px;
+    }
+
+    .nav {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      flex-grow: 1;
+    }
+
+    .nav li {
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .nav li:hover,
+    .nav li.active {
+      background-color: #5e4abd;
+    }
+
+
+    .nav-bottom {
+      padding: 15px 20px;
+      background-color: blue;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .main {
+      margin-left: 240px;
+      padding: 0px;
+      flex: 1;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: white;
+      padding: 20px;
+      border-radius: 0 0 8px 8px;
+      font-size: 20px;
+      font-weight: bold;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid #eee;
+    }
+
+    .user-table {
+      background-color: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+       margin: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 15px;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    th {
+      background-color: white;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h1>DEV-IMMO</h1>
+    <ul class="nav">
+      <li><img src="ICONES/tab.svg" class="icon"> Tableau de bord</li>
+      <li><img src="ICONES/agent.svg" class="icon"> Agents</li>
+      <li><img src="ICONES/bien.svg" class="icon"> Biens</li>
+      <li class="active"><img src="ICONES/utilisateur.svg" class="icon"> Utilisateurs</li>
+      <li><img src="ICONES/statistiques.svg" class="icon"> Statistiques</li>
+    </ul>
+    <div class="nav-bottom">
+      <img src="ICONES/rapports.svg" class="icon"> Rapports
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="header">
+      <span>Gestion des utilisateurs</span>
+      <img src="ICONES/protection.svg" class="icon">
+    </div>
+
+    <div class="user-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Prénom-Nom</th>
+            <th>Mail</th>
+            <th>Statut</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Young Boy</td><td>youngboy@gmail.com</td><td>Client</td><td><img src="ICONES/notifications.svg"></td></tr>
+          <tr><td>Young Boy</td><td>youngboy@gmail.com</td><td>Visiteur</td><td><img src="ICONES/notifications.svg"></td></tr>
+          <tr><td>Young Boy</td><td>youngboy@gmail.com</td><td>Locataire</td><td><img src="ICONES/notifications.svg"></td></tr>
+          <tr><td>Young Boy</td><td>youngboy@gmail.com</td><td>Client</td><td><img src="ICONES/notifications.svg"></td></tr>
+          <tr><td>Young Boy</td><td>youngboy@gmail.com</td><td>Visiteur</td><td><img src="ICONES/notifications.svg"></td></tr>
+          <tr><td>Young Boy</td><td>youngboy@gmail.com</td><td>Locataire</td><td><img src="ICONES/notifications.svg"></td></tr>
+          <tr><td>Young Boy</td><td>youngboy@gmail.com</td><td>Client</td><td><img src="ICONES/notifications.svg"></td></tr>
+          <tr><td>Young Boy</td><td>youngboy@gmail.com</td><td>Client</td><td><img src="ICONES/notifications.svg"></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DEV-IMMO | Statistiques</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      background-color: #E9E9E9;
+    }
+    .sidebar {
+      width: 240px;
+      background: linear-gradient(to bottom, #2196f3 0px, #999 60px);
+      color: white;
+      height: 100vh;
+      position: fixed;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .sidebar h1 {
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+      background-color: #876CFF;
+      font-size: 24px;
+    }
+    .nav {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      background-color: blue;
+      flex-grow: 1;
+    }
+    .nav li {
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .nav li:hover,
+    .nav li.active {
+      background-color: #5e4abd;
+    }
+    .nav-bottom {
+      padding: 15px 20px;
+      background-color: blue;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+    .main {
+      margin-left: 240px;
+      flex: 1;
+      padding: 0 20px;
+    }
+    .top-bar {
+    background-color: #fff;
+      padding: 20px;
+      border-radius: 0 0 8px 8px;
+      font-size: 20px;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid #eee;
+    }
+    .overview-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      background-color: #E9E9E9;
+      margin-top: 20px;
+      border-radius: 8px;
+    }
+    .overview-controls h3 {
+      margin: 0;
+    }
+    .controls {
+      display: flex;
+      gap: 10px;
+    }
+    .controls input,
+    .controls select,
+    .controls button {
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    .controls button {
+      background-color: #3f51b5;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .stat-overview {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      background: #E9E9E9;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+    .stat-box {
+      flex: 1 1 200px;
+      background-color: #ffffff;
+      padding: 15px 15px 15px 10px;
+      border-radius: 8px;
+      border-left: 5px solid #2196f3;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .section {
+      background: white;
+      margin-top: 20px;
+      padding: 20px;
+      border-radius: 8px;
+      position: relative;
+      flex: 1;
+    }
+    .section h3 {
+      margin-top: 0;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: unset;
+    }
+    .section .dropdown {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 6px 10px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+    }
+    .sales-growth {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 20px;
+    }
+    .bien-card {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      background: #fff;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .bien-card img {
+      width: 80px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+    .bien-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .bien-info strong {
+      font-size: 16px;
+    }
+    .bien-info small {
+      font-size: 13px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h1>DEVI-MMO</h1>
+    <ul class="nav">
+      <li><img src="ICONES/tab.svg"> Tableau de bord</li>
+      <li><img src="ICONES/agent.svg"> Agents</li>
+      <li><img src="ICONES/bien.svg"> Biens</li>
+      <li><img src="ICONES/utilisateur.svg"> Utilisateurs</li>
+      <li class="active"><img src="ICONES/statistiques.svg"> Statistiques</li>
+    </ul>
+    <div class="nav-bottom">
+      <img src="ICONES/rapports.svg"> Rapports
+    </div>
+  </div>
+  <div class="main">
+    <div class="top-bar">
+      <span>Vu Globale sur les Statistiques</span>
+      <img src="ICONES/protection.svg">
+    </div>
+
+    <div class="overview-controls">
+      <h3>Aperçu</h3>
+      <div class="controls">
+        <input type="text" placeholder="Rechercher un bien ...">
+        <input type="text" placeholder="jj/mm/aa">
+        <button>Exporter</button>
+      </div>
+    </div>
+
+    <div class="stat-overview">
+      <div class="stat-box">
+        <strong>Total Propriétés</strong>
+        <div>5,569</div>
+        <small style="color: red;">-3,0% par rapport au mois dernier</small>
+      </div>
+      <div class="stat-box">
+        <strong>Total Vendu</strong>
+        <div>569</div>
+        <small style="color: green;">+2,7% par rapport au mois dernier</small>
+      </div>
+      <div class="stat-box">
+        <strong>Total Louer</strong>
+        <div>5,000</div>
+        <small style="color: green;">+5% par rapport au mois dernier</small>
+      </div>
+      <div class="stat-box">
+        <strong>Total Revenue</strong>
+        <div>5,000</div>
+        <small style="color: green;">+5k par rapport au mois dernier</small>
+      </div>
+    </div>
+      <p style="background-color: #E9E9E9;"><strong>74 locataires</strong> ont été soumis récemment.<br>
+      Des problèmes ont été détectés, veuillez vérifier.</p>
+
+    <div class="sales-growth">
+      <div class="section">
+        <h3>Statistiques de ventes</h3>
+        <div class="dropdown">Le mois dernier <i class="fas fa-chevron-down"></i></div>
+        <p>Total ventes : 32,372<br>
+        Profits : 10,000<br>
+        Couts : 12,372</p>
+        <img src="ICONES/ventes.svg" alt="Graphique des ventes" style="width:100%;">
+      </div>
+
+      <div class="section">
+        <h3>Croissance Annuelle</h3>
+        <div class="dropdown">Le mois dernier <i class="fas fa-chevron-down"></i></div>
+        <p><strong>732,629</strong><br>
+        Revenu issus des ventes et locations</p>
+        <img src="ICONES/croissance.svg" alt="Barres croissance" style="width:100%;">
+      </div>
+    </div>
+      <h3>Biens en vitrine</h3>
+    <div class="section">
+      <div class="bien-card">
+        <img src="ICONES/luxe.svg" alt="Villa">
+        <div class="bien-info">
+          <strong>Villa de luxe</strong>
+          <small>230.000 cfa - Quartier résidentiel</small>
+        </div>
+      </div>
+      <div class="bien-card">
+        <img src="ICONES/urbain.svg" alt="Appartement">
+        <div class="bien-info">
+          <strong>Appartement meublé</strong>
+          <small>5.000.000 cfa - Centre-ville</small>
+        </div>
+      </div>
+      <div class="bien-card">
+        <img src="ICONES/modern.svg" alt="Maison plage">
+        <div class="bien-info">
+          <strong>Maison sur la plage</strong>
+          <small>27.000.000 cfa - Vue mer</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
