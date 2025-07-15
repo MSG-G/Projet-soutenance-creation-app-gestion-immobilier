@@ -188,30 +188,72 @@
   </template>
   
   <script setup>
-  import { ref, computed } from 'vue'
-  
-  const visits = ref([
-    {
-      id: 1,
-      title: 'Appartement centre-ville',
-      date: '2025-07-10',
-      time: '14:00',
-      location: 'Dakar Plateau',
-      client: 'Fatou Ndiaye',
-      note: 'Souhaite une visite rapide',
-      status: 'pending'
-    }
-  ])
-  
-  const selectedStatus = ref('')
-  const showModal = ref(false)
-  
-  const filteredVisits = computed(() => {
-    if (!selectedStatus.value) return visits.value
-    return visits.value.filter(v => v.status === selectedStatus.value)
-  })
-  
-  const newVisit = ref({
+import { ref, computed, onMounted } from 'vue'
+import api from '@/utils/api'
+
+// Données
+const visits = ref([])
+const selectedStatus = ref('')
+const showModal = ref(false)
+const isEditing = ref(false)
+const newVisit = ref({
+  id: null,
+  title: '',
+  date: '',
+  time: '',
+  location: '',
+  client: '',
+  note: ''
+})
+
+// Helpers
+function translateStatus(apiStatus) {
+  switch (apiStatus) {
+    case 'planifiee':
+    case 'pending':
+      return 'pending'
+    case 'confirmee':
+    case 'confirmed':
+      return 'confirmed'
+    case 'annulee':
+    case 'refused':
+      return 'refused'
+    default:
+      return 'pending'
+  }
+}
+
+// Fetch des visites
+async function fetchVisits() {
+  try {
+    const res = await api.get('/reservations') // TODO : ajuster endpoint si nécessaire
+    visits.value = res.data.map(r => ({
+      id: r.id,
+      title: r.bien?.titre || r.bien?.nom || 'Bien',
+      date: r.date_visite?.split('T')[0] || '',
+      time: r.date_visite?.split('T')[1]?.substring(0, 5) || '',
+      location: r.bien?.adresse || '',
+      client: r.client?.name || '',
+      note: r.message || '',
+      status: translateStatus(r.etat || r.status)
+    }))
+  } catch (e) {
+    console.error('Erreur chargement visites', e)
+  }
+}
+
+onMounted(fetchVisits)
+
+// Computed
+const filteredVisits = computed(() => {
+  return selectedStatus.value
+    ? visits.value.filter(v => v.status === selectedStatus.value)
+    : visits.value
+})
+
+// Modal helpers
+function resetNewVisit() {
+  newVisit.value = {
     id: null,
     title: '',
     date: '',
@@ -219,99 +261,95 @@
     location: '',
     client: '',
     note: ''
-  })
-  
-  const isEditing = ref(false)
-  
-  function resetNewVisit() {
-    newVisit.value = {
-      id: null,
-      title: '',
-      date: '',
-      time: '',
-      location: '',
-      client: '',
-      note: ''
-    }
   }
-  
-  const openModal = (visit = null) => {
-    if (visit) {
-      newVisit.value = { ...visit }
-      isEditing.value = true
-    } else {
-      resetNewVisit()
-      isEditing.value = false
-    }
-    showModal.value = true
+}
+
+function openModal(visit = null) {
+  if (visit) {
+    newVisit.value = { ...visit }
+    isEditing.value = true
+  } else {
+    resetNewVisit()
+    isEditing.value = false
   }
-  
-  const closeModal = () => {
-    showModal.value = false
+  showModal.value = true
+}
+
+function closeModal() {
+  showModal.value = false
+}
+
+// Création / édition côté front (à adapter avec votre backend)
+async function submitForm() {
+  if (!newVisit.value.title || !newVisit.value.date || !newVisit.value.time || !newVisit.value.location || !newVisit.value.client) {
+    alert('Veuillez remplir tous les champs obligatoires.')
+    return
   }
-  
-  const submitForm = () => {
-    if (!newVisit.value.title || !newVisit.value.date || !newVisit.value.time || !newVisit.value.location || !newVisit.value.client) {
-      alert('Veuillez remplir tous les champs obligatoires.')
-      return
-    }
-  
-    if (isEditing.value) {
-      const index = visits.value.findIndex(v => v.id === newVisit.value.id)
-      if (index !== -1) visits.value[index] = { ...newVisit.value }
-    } else {
-      const newId = visits.value.length ? Math.max(...visits.value.map(v => v.id)) + 1 : 1
-      visits.value.push({
-        id: newId,
-        title: newVisit.value.title,
-        date: newVisit.value.date,
-        time: newVisit.value.time,
-        location: newVisit.value.location,
-        client: newVisit.value.client,
-        note: newVisit.value.note,
-        status: 'pending'
-      })
-    }
-  
-    closeModal()
+
+  if (isEditing.value) {
+    // Appel API update si disponible
+    const idx = visits.value.findIndex(v => v.id === newVisit.value.id)
+    if (idx !== -1) visits.value[idx] = { ...newVisit.value }
+  } else {
+    // Appel API création si disponible
+    visits.value.push({ ...newVisit.value, id: Date.now(), status: 'pending' })
   }
-  
-  const confirmVisit = id => {
+
+  closeModal()
+}
+
+// Actions statut
+async function confirmVisit(id) {
+  try {
+    await api.put(`/reservations/${id}/etat`, { etat: 'confirmee' })
     const v = visits.value.find(v => v.id === id)
     if (v) v.status = 'confirmed'
+  } catch (e) {
+    console.error(e)
   }
-  
-  const refuseVisit = id => {
+}
+
+async function refuseVisit(id) {
+  try {
+    await api.put(`/reservations/${id}/etat`, { etat: 'annulee' })
     const v = visits.value.find(v => v.id === id)
     if (v) v.status = 'refused'
+  } catch (e) {
+    console.error(e)
   }
-  
-  const contactClient = client => {
-    alert(`Contacter le client : ${client} (fonction à implémenter)`)
+}
+
+function contactClient(client) {
+  alert(`Contacter le client : ${client}`)
+}
+
+// Label & classe helpers
+function statusLabel(status) {
+  switch (status) {
+    case 'pending':
+      return 'En attente'
+    case 'confirmed':
+      return 'Confirmée'
+    case 'refused':
+      return 'Refusée'
+    default:
+      return status
   }
-  
-  const statusLabel = status => {
-    switch (status) {
-      case 'pending': return 'En attente'
-      case 'confirmed': return 'Confirmée'
-      case 'refused': return 'Refusée'
-      default: return status
-    }
+}
+
+function statusTextClass(status) {
+  return {
+    'text-secondary': status === 'pending',
+    'text-success': status === 'confirmed',
+    'text-danger': status === 'refused'
   }
-  
-  const statusTextClass = status => {
-    return {
-      'text-secondary': status === 'pending',
-      'text-success': status === 'confirmed',
-      'text-danger': status === 'refused'
-    }
-  }
-  </script>
-  
-  <style scoped>
-  @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
-  
+}
+
+</script>
+<style scoped>
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
   .reservation-page {
     background-color: #f9fafb;
     min-height: 100vh;

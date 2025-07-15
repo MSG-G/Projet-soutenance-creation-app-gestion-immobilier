@@ -5,15 +5,15 @@
       <div class="d-flex shadow rounded p-2  shadow-sm align-items-center carte">
         <img :src="bien.image" alt="bien" class="img-thumbnail me-5" style="width: 80px; height: 80px;" />
         <div>
-          <h4 class="mb-1">{{ bien.nom }}</h4>
-          <small class="text-muted">{{ bien.localisation }}</small><br/>
+          <h4 class="mb-1">{{ bien.titre }}</h4>
+          <small class="text-muted">{{ bien.ville?.nom }}</small><br/>
           <div class="d-flex justify-content-between align-items-center">
             <span>
             <strong>{{ bien.prix }} FCFA</strong>
             </span>
 
-          <span class="badge" :class="bien.disponible ? 'bg-primary' : 'bg-secondary'">
-            {{ bien.disponible ? 'Disponible' : 'Vendu' }}
+          <span class="badge" :class="(bien.statut ?? (bien.disponible ? 'bg-primary' : 'bg-secondary'))">
+            {{ bien.statut ?? (bien.disponible ? 'Disponible' : 'Vendu') }}
           </span>
          </div>
         </div>

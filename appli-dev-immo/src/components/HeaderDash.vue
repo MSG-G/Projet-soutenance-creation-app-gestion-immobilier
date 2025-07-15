@@ -3,9 +3,9 @@
     <!-- Titre dynamique -->
     <h2 class="titre-page m-0">{{ titrepage }}</h2>
 
-    <!-- Infos utilisateur -->
+    <!-- Gestion types/villes + Infos utilisateur -->
     <div class="info-user d-flex align-items-center gap-3">
-      <span v-if="utilisateur" class="user-info">
+            <span v-if="utilisateur" class="user-info">
         {{ utilisateur.nom }} <small class="text-muted">({{ utilisateur.role }})</small>
       </span>
       <span v-else class="text-muted">Invité</span>
@@ -19,13 +19,16 @@
          role="button"
       ></i>
     </div>
+
+
   </header>
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue'
+import { computed, ref, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useUserStore } from '../stores/user'
+
 
 const route = useRoute()
 const userStore = useUserStore()
@@ -40,15 +43,12 @@ const titres = {
   '/admin/statistiques': 'Statistiques',
   '/admin/rapports': 'Rapports',
   '/admin/parametres': 'Paramètres',
-
   // agent
   '/agent/biens': 'Mes biens',
   '/agent/visites': 'Visites',
   '/agent/reservations': 'Réservations',
 }
-
 const titrepage = computed(() => titres[route.path] || 'Bienvenue sur DEV-IMMO')
-
 const logout = () => {
   userStore.logout()
   window.location.href = '/'
@@ -61,6 +61,7 @@ onMounted(() => {
     new bootstrap.Tooltip(el)
   })
 })
+
 </script>
 
 <style scoped>
@@ -105,5 +106,27 @@ onMounted(() => {
     font-size: 12px;
     gap: 1rem;
   }
+}
+.custom-modal-overlay {
+  position: fixed;
+  left: 0; top: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.4);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.custom-modal-content {
+  background: #fff;
+  border-radius: 10px;
+  max-width: 700px;
+  width: 100%;
+  box-shadow: 0 2px 32px rgba(0,0,0,0.19);
+  animation: popin .25s;
+}
+@keyframes popin {
+  from { transform: scale(0.95); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
 }
 </style>

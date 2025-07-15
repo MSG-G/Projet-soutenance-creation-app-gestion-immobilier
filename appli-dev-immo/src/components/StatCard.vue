@@ -10,9 +10,9 @@
 import { computed } from 'vue'
 
 const props = defineProps({
-  titre: String,
-  valeur: String,
-  variation: String,
+  titre: { type: String, required: true },
+  valeur: { type: [String, Number], required: true },
+  variation: { type: String, required: false },
   type: String
 })
 

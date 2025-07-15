@@ -39,12 +39,14 @@ import GraphiqueLigne from './GraphiqueLigne.vue'
 import GraphiqueBarres from './GraphiqueBarres.vue'
 
 defineProps({
-  titre: String,
-  totalVentes: String,
-  profit: String,
-  cout: String,
-  revenu: String,
-  texte: String
+  titre: { type: String, required: true },
+  revenu: { type: [String, Array], required: false },
+  texte: { type: String, required: false },
+  totalVentes: { type: [String, Number], required: false },
+  profit: { type: [String, Number], required: false },
+  cout: { type: [String, Number], required: false },
+  data: { type: [Array, Object], required: false },
+  type: { type: String, required: false }
 })
 
 // ✅ Données pour le graphique en ligne

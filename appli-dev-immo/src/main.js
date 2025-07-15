@@ -4,9 +4,7 @@ import App from './App.vue'
 import router from './router'
 import { createPinia } from 'pinia'
 import '@fortawesome/fontawesome-free/css/all.min.css'
-
-// Simuler un user connecté (pour test)
-localStorage.setItem('user', JSON.stringify({ nom: 'coumba', role: '' })) // 
+import 'animate.css'
 
 const app = createApp(App)
 

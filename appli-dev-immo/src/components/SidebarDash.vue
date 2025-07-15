@@ -33,7 +33,7 @@
 import { useRoute } from 'vue-router'
 import {
   Grid, Users, Home, User, BarChart2, FileText,
-  FileSignature, Calendar, MessageCircle, Bell, Settings
+  FileSignature, Calendar, MessageCircle, Bell, Settings, MapPin, Layers
 } from 'lucide-vue-next'
 
 const route = useRoute()
@@ -41,11 +41,16 @@ const isActive = (path) => route.path === path
 
 const menuItems = [
   { path: '/admin/biens', label: 'Biens immobiliers', icon: Home },
+  
+  { path: '/admin/contrats', label: 'Contrats', icon: FileText },
   { path: '/admin/proprietaires', label: 'Propriétaires', icon: User },
+  { path: '/admin/locataires', label: 'Locataires', icon: Users },
   { path: '/admin/reservations', label: 'Reservations', icon: Calendar },
   { path: '/admin/utilisateurs', label: 'Utilisateurs', icon: User },
+  { path: '/admin/villes', label: 'Villes', icon: MapPin },
+  { path: '/admin/types-bien', label: 'Types de bien', icon: Layers },
   { path: '/admin/statistiques', label: 'Statistiques', icon: BarChart2 },
-  { path: '/admin/rapports', label: 'Rapports', icon: FileText } // déplacé ici
+  
 ]
 </script>
 <style scoped>

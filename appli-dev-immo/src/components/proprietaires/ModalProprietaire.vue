@@ -12,12 +12,13 @@
         </div>
 
         <!-- Form -->
+        <div v-if="erreurApi" class="alert alert-danger mb-3">{{ erreurApi }}</div>
         <form @submit.prevent="validerFormulaire" novalidate>
           <div class="modal-body px-5 py-4">
             <div class="row g-4">
 
               <div class="col-md-6">
-                <label for="nom" class="form-label">Nom complet <span class="text-danger">*</span></label>
+                <label for="nom" class="form-label">Nom <span class="text-danger">*</span></label>
                 <div class="input-group has-icon">
                   <span class="input-group-text"><i class="fas fa-user"></i></span>
                   <input
@@ -26,10 +27,27 @@
                     id="nom"
                     class="form-control"
                     :class="{ 'is-invalid': erreurs.nom }"
-                    placeholder="Ex : Fatou Ndiaye"
+                    placeholder="Ex : Ndiaye"
                     required
                   />
                   <div v-if="erreurs.nom" class="invalid-feedback">{{ erreurs.nom }}</div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="prenom" class="form-label">Prénom <span class="text-danger">*</span></label>
+                <div class="input-group has-icon">
+                  <span class="input-group-text"><i class="fas fa-user"></i></span>
+                  <input
+                    v-model="form.prenom"
+                    type="text"
+                    id="prenom"
+                    class="form-control"
+                    :class="{ 'is-invalid': erreurs.prenom }"
+                    placeholder="Ex : Fatou"
+                    required
+                  />
+                  <div v-if="erreurs.prenom" class="invalid-feedback">{{ erreurs.prenom }}</div>
                 </div>
               </div>
 
@@ -100,13 +118,15 @@ import { reactive, watch } from 'vue'
 import { isEmail } from '../../utils/validators'
 
 const props = defineProps({
-  proprietaire: Object
+  proprietaire: Object,
+  erreurApi: String
 })
 
 const emit = defineEmits(['fermer', 'enregistrer'])
 
 const form = reactive({
   nom: '',
+  prenom: '',
   email: '',
   telephone: '',
   adresse: ''
@@ -114,6 +134,7 @@ const form = reactive({
 
 const erreurs = reactive({
   nom: '',
+  prenom: '',
   email: '',
   telephone: ''
 })
@@ -124,7 +145,7 @@ watch(
     if (val) {
       Object.assign(form, val)
     } else {
-      Object.assign(form, { nom: '', email: '', telephone: '', adresse: '' })
+      Object.assign(form, { nom: '', prenom: '', email: '', telephone: '', adresse: '' })
     }
   },
   { immediate: true }
@@ -132,10 +153,11 @@ watch(
 
 function validerFormulaire() {
   erreurs.nom = form.nom ? '' : 'Le nom est requis.'
+  erreurs.prenom = form.prenom ? '' : 'Le prénom est requis.'
   erreurs.email = form.email && !isEmail(form.email) ? 'Email invalide' : ''
   erreurs.telephone = form.telephone ? '' : 'Le téléphone est requis.'
 
-  if (!erreurs.nom && !erreurs.email && !erreurs.telephone) {
+  if (!erreurs.nom && !erreurs.prenom && !erreurs.email && !erreurs.telephone) {
     emit('enregistrer', { ...form })
   }
 }

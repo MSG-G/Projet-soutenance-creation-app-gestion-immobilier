@@ -1,92 +1,116 @@
 <template>
   <div class="register-container">
     <div class="form-box animate__animated animate__fadeInDown">
-      <h2 class="text-center mb-3">Créer un compte</h2>
+        <!-- Vue Succès -->
+        <div v-if="registrationSuccess" class="text-center">
+          <i class="fas fa-check-circle text-success" style="font-size: 4rem;"></i>
+          <h2 class="mt-3">Inscription réussie !</h2>
+          <p class="text-muted">Bienvenue chez DEV-IMMO. Vous allez être redirigé vers l'accueil.</p>
+        </div>
 
-      <div class="error" v-if="error">{{ error }}</div>
+        <!-- Vue Formulaire -->
+        <div v-else>
+          <h2 class="text-center mb-3">Créer un compte</h2>
 
-      <input
-        type="text"
-        v-model="username"
-        placeholder="Nom d'utilisateur"
-      />
+          <div class="error" v-if="error">{{ error }}</div>
 
-      <input
-        type="email"
-        v-model="email"
-        placeholder="Adresse email"
-      />
+          <input
+            type="text"
+            v-model="username"
+            placeholder="Nom d'utilisateur"
+          />
 
-      <input
-        type="password"
-        v-model="password"
-        placeholder="Mot de passe"
-      />
+          <input
+            type="email"
+            v-model="email"
+            placeholder="Adresse email"
+          />
+          <input
+            type="number"
+            v-model="phone"
+            placeholder="Numéro de téléphone"
+          />
 
-      <input
-        type="password"
-        v-model="confirmPassword"
-        placeholder="Confirmer le mot de passe"
-      />
+          <input
+            type="password"
+            v-model="password"
+            placeholder="Mot de passe"
+          />
 
-      <button @click="register">S'inscrire</button>
+          <input
+            type="password"
+            v-model="confirmPassword"
+            placeholder="Confirmer le mot de passe"
+          />
 
-      <div class="divider">
-        <span>ou</span>
+          <button @click="register">S'inscrire</button>
+
+          <div class="divider">
+            <span>ou</span>
+          </div>
+
+          <button class="btn-google" @click="connectGoogle">
+            <i class="fab fa-google me-2"></i> Continuer avec Google
+          </button>
+
+          <button class="btn-facebook" @click="connectFacebook">
+            <i class="fab fa-facebook me-2"></i> Continuer avec Facebook
+          </button>
+
+          <p class="text-center mt-3">
+            Déjà inscrit ?
+            <router-link to="/login" class="link-primary">Se connecter</router-link>
+          </p>
+        </div>
       </div>
-
-      <button class="btn-google" @click="connectGoogle">
-        <i class="fab fa-google me-2"></i> Continuer avec Google
-      </button>
-
-      <button class="btn-facebook" @click="connectFacebook">
-        <i class="fab fa-facebook me-2"></i> Continuer avec Facebook
-      </button>
-
-      <p class="text-center mt-3">
-        Déjà inscrit ?
-        <router-link to="/login" class="link-primary">Se connecter</router-link>
-      </p>
-    </div>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'Register',
-  data() {
-    return {
-      username: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-      error: ''
-    }
-  },
-  methods: {
-    register() {
-      if (!this.username || !this.email || !this.password || !this.confirmPassword) {
-        this.error = "Veuillez remplir tous les champs.";
-        return;
-      }
+<script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useUserStore } from '../../stores/user'; // Assurez-vous que le chemin est correct
 
-      if (this.password !== this.confirmPassword) {
-        this.error = "Les mots de passe ne correspondent pas.";
-        return;
-      }
+const username = ref('');
+const email = ref('');
+const password = ref('');
+const phone = ref('');
+const confirmPassword = ref('');
+const error = ref('');
+const registrationSuccess = ref(false);
+const router = useRouter();
+const userStore = useUserStore();
 
-      this.error = "";
-      alert("Inscription réussie !");
-      // Envoie vers API plus tard
-    },
-    connectGoogle() {
-      alert("Connexion avec Google - à implémenter avec Firebase.");
-    },
-    connectFacebook() {
-      alert("Connexion avec Facebook - à implémenter.");
-    }
+const register = async () => {
+  if (!username.value || !email.value || !phone.value || !password.value || !confirmPassword.value) {
+    error.value = "Veuillez remplir tous les champs.";
+    return;
   }
-}
+
+  if (password.value !== confirmPassword.value) {
+    error.value = "Les mots de passe ne correspondent pas.";
+    return;
+  }
+
+  error.value = "";
+  try {
+    await userStore.register(username.value, email.value, password.value, phone.value);
+    registrationSuccess.value = true; // Affiche le message de succès
+    setTimeout(() => {
+      router.push('/public'); // Redirige vers l'accueil après 3 secondes
+    }, 3000);
+  } catch (err) {
+    error.value = err.message || 'Une erreur est survenue lors de l`inscription.';
+  }
+};
+
+    const connectGoogle = () => {
+  alert("Connexion avec Google - à implémenter avec Firebase.");
+};
+
+const connectFacebook = () => {
+  alert("Connexion avec Facebook - à implémenter.");
+};
 </script>
 
 <style scoped>

@@ -78,6 +78,38 @@
   
   <script setup>
   import { ref } from 'vue'
+  import { usersApi } from '../../utils/apiResources'
+
+  const parametres = ref({})
+  const loading = ref(false)
+  const error = ref('')
+
+  const chargerParametres = async () => {
+    loading.value = true
+    try {
+      const response = await usersApi.list()
+      parametres.value = response.data
+    } catch (err) {
+      error.value = err.response?.data?.message || 'Erreur lors du chargement des paramètres'
+    } finally {
+      loading.value = false
+    }
+  }
+
+  // Pour sauvegarder les paramètres utilisateur
+  const sauvegarderParametres = async (id, data) => {
+    loading.value = true
+    try {
+      await usersApi.update(id, data)
+      await chargerParametres()
+    } catch (err) {
+      error.value = err.response?.data?.message || 'Erreur lors de la sauvegarde des paramètres'
+    } finally {
+      loading.value = false
+    }
+  }
+
+  // Appeler chargerParametres() au besoin
   
   const isDark = ref(false)
   const langue = ref('fr')

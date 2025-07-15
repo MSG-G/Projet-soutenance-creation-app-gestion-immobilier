@@ -40,87 +40,82 @@
         </button>
       </div>
 
+
       <!-- États -->
       <ErrorAlert v-if="erreur" :message="erreur" />
       <Loader v-if="chargement" />
 
-      <!-- Liste des biens -->
-      <div v-if="!chargement && biensFiltres.length" class="table-responsive">
-        <table class="table table-bordered table-hover align-middle shadow-sm">
-          <thead class="table-light sticky-top">
-            <tr>
-              <th>Image</th>
-              <th>Nom</th>
-              <th>Lieu</th>
-              <th>Type</th>
-              <th>Prix (Fcfa)</th>
-              <th>Statut</th>
-              <th class="text-center">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="bien in biensFiltresPage" :key="bien.id">
-              <td>
-                <img
-                  :src="bien.image || placeholderImage"
-                  alt="img"
-                  class="img-thumbnail"
-                  style="width: 70px; height: 70px; object-fit: cover; border-radius: 6px;"
-                />
-              </td>
-              <td>{{ bien.nom }}</td>
-              <td>{{ bien.lieu }}</td>
-              <td>{{ bien.type }}</td>
-              <td>{{ bien.prix.toLocaleString() }}</td>
-              <td>
-                <span :class="badgeStatut(bien.statut)">{{ bien.statut }}</span>
-              </td>
-              <td class="text-center">
-                <button class="btn btn-sm btn-outline-primary me-2" @click="ouvrirFormulaire(bien)">
-                  <i class="fas fa-edit"></i>
-                </button>
-                <button class="btn btn-sm btn-outline-danger" @click="confirmerSuppression(bien)">
-                  <i class="fas fa-trash"></i>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <!-- Pagination -->
-        <ul class="pagination justify-content-center mt-4">
-          <li class="page-item" :class="{ disabled: pageActuelle === 1 }" @click="changerPage(pageActuelle - 1)">
-            <a class="page-link">&laquo;</a>
+      <!-- Liste des biens en cards -->
+      <div v-if="!chargement && biensFiltres.length" class="row g-4">
+        <div v-for="bien in biensFiltresPage" :key="bien.id" class="col-12 col-md-6 col-lg-4">
+          <div class="card shadow-sm p-3 h-100">
+            <img
+  :src="(bien.photos && bien.photos.length)
+    ? (bien.photos[0].url + '?t=' + (bien.updated_at || Date.now()))
+    : (bien.image ? (bien.image + '?t=' + (bien.updated_at || Date.now())) : placeholderImage)"
+  alt="img"
+  class="img-fluid rounded mb-3"
+  style="width:100%;height:180px;object-fit:cover;"
+/>
+            <h5 class="mb-1">{{ bien.titre }}</h5>
+            <p class="mb-1 text-muted">{{ bien.description }}</p>
+            <p class="mb-1"><strong>Prix :</strong> {{ bien.prix ? Number(bien.prix).toLocaleString() : '' }} FCFA</p>
+            <p class="mb-1"><strong>Surface :</strong> {{ bien.surface }} m²</p>
+            <p class="mb-1"><strong>Adresse :</strong> {{ bien.adresse }}</p>
+            <p class="mb-1"><strong>Statut :</strong> <span style="font-size: 15px; color: black;" :class="badgeStatut(bien.statut)">{{ bien.statut }}</span></p>
+            <p class="mb-1"><strong>Ville :</strong> {{ bien.ville?.nom }}</p>
+            <p class="mb-1"><strong>Type :</strong> {{ bien.type_bien?.nom }}</p>
+            <p class="mb-1"><strong>Propriétaire :</strong> {{ bien.proprietaire?.nom }}</p>
+            <div class="d-flex justify-content-end gap-2 mt-2">
+              <button class="btn btn-sm btn-outline-primary" @click="ouvrirFormulaire(bien)">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-danger" @click="confirmerSuppression(bien)">
+                <i class="fas fa-trash"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-info" @click="ouvrirShowBien(bien)">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Pagination -->
+      <nav v-if="totalPages > 1 && !chargement" aria-label="Pagination biens" class="mt-4">
+        <ul class="pagination justify-content-center">
+          <li class="page-item" :class="{ disabled: pageActuelle === 1 }">
+            <button class="page-link" @click="changerPage(pageActuelle - 1)" :disabled="pageActuelle === 1">&laquo;</button>
           </li>
-          <li
-            v-for="page in totalPages"
-            :key="page"
-            class="page-item"
-            :class="{ active: page === pageActuelle }"
-            @click="changerPage(page)"
-          >
-            <a class="page-link">{{ page }}</a>
+          <li v-for="page in totalPages" :key="page" class="page-item" :class="{ active: pageActuelle === page }">
+            <button class="page-link" @click="changerPage(page)">{{ page }}</button>
           </li>
-          <li class="page-item" :class="{ disabled: pageActuelle === totalPages }" @click="changerPage(pageActuelle + 1)">
-            <a class="page-link">&raquo;</a>
+          <li class="page-item" :class="{ disabled: pageActuelle === totalPages }">
+            <button class="page-link" @click="changerPage(pageActuelle + 1)" :disabled="pageActuelle === totalPages">&raquo;</button>
           </li>
         </ul>
-      </div>
-
+      </nav>
       <div v-else-if="!chargement" class="alert alert-warning text-center">Aucun bien trouvé.</div>
 
       <!-- Modals -->
       <ModalBien
-  :visible="modalVisible"
-  :bien="bienEdit"
-  @fermer="fermerFormulaire"
-  @enregistrer="handleEnregistrer"
-/>
+        :visible="modalVisible"
+        :bien="bienEdit"
+        :bien-cree="bienCree"
+        @fermer="fermerFormulaire"
+        @enregistrer="handleEnregistrer"
+      />
       <ModalConfirmation
-        v-if="modalSuppressionVisible"
-        :message="`Voulez-vous vraiment supprimer le bien '${bienSuppression?.nom}' ?`"
+        :visible="modalSuppressionVisible"
+        :message="`Voulez-vous vraiment supprimer le bien '${bienSuppression?.titre}' ?`"
+        :loading="suppressionLoading"
         @confirmer="supprimerBien"
         @annuler="modalSuppressionVisible = false"
+      />
+      <ModalVoirBien
+        v-if="showBienVisible"
+        :bien="bienShow"
+        :key="bienShow && (bienShow.photos && bienShow.photos.length ? bienShow.photos[0].url : bienShow.image) + '-' + showBienVisible"
+        @fermer="fermerShowBien"
       />
     </main>
   </div>
@@ -128,11 +123,13 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import axios from 'axios'
-
+import { useRouter } from 'vue-router'
 import Loader from '@/components/Loader.vue'
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import ModalBien from '@/components/biens/ModalBien.vue'
 import ModalConfirmation from '@/components/ui/ModalConfirmation.vue'
+import ModalVoirBien from '@/components/biens/ModalVoirBien.vue'
+import { biensApi } from '../../utils/apiResources'
 
 const recherche = ref('')
 const filtreLieu = ref('')
@@ -153,29 +150,42 @@ const itemsParPage = 8
 
 const modalVisible = ref(false)
 const bienEdit = ref(null)
+const bienCree = ref(null)
 const modalSuppressionVisible = ref(false)
 const bienSuppression = ref(null)
+
+const showBienVisible = ref(false)
+const bienShow = ref(null)
+
+const suppressionLoading = ref(false)
 
 const chargerBiens = async () => {
   chargement.value = true
   erreur.value = ''
   try {
-    const res = await axios.get('/api/biens')
-    biens.value = res.data.data || []
+    const response = await biensApi.list()
+    biens.value = Array.isArray(response.data) ? response.data : response.data.data || []
+    console.log('Biens reçus de l’API:', biens.value)
+    console.log('Nombre total de biens reçus:', biens.value.length)
   } catch (err) {
-    erreur.value = "Impossible de charger les biens."
+    erreur.value = err.response?.data?.message || "Impossible de charger les biens."
   } finally {
     chargement.value = false
   }
 }
 
+watch(biens, (nv) => {
+  console.log('Biens affichés après filtrage:', biensFiltres.value.length)
+  console.log('Biens filtrés:', biensFiltres.value)
+})
+
 const biensFiltres = computed(() => {
   return biens.value.filter((b) => {
     return (
-      (!filtreLieu.value || b.lieu === filtreLieu.value) &&
-      (!filtreType.value || b.type === filtreType.value) &&
+      (!filtreLieu.value || b.ville?.nom === filtreLieu.value) &&
+      (!filtreType.value || b.type_bien?.nom === filtreType.value) &&
       (!filtreStatut.value || b.statut === filtreStatut.value) &&
-      (!recherche.value || b.nom.toLowerCase().includes(recherche.value.toLowerCase()))
+      (!recherche.value || b.titre.toLowerCase().includes(recherche.value.toLowerCase()))
     )
   })
 })
@@ -212,16 +222,36 @@ function fermerFormulaire() {
 
 async function handleEnregistrer(bienSauve) {
   try {
-    if (bienSauve.id) {
-      await axios.put(`/api/biens/${bienSauve.id}`, bienSauve)
+    let bienCreeRes = null;
+    // Si bienSauve est un FormData (cas image), il faut forcer multipart
+    const isFormData = (typeof FormData !== 'undefined') && (bienSauve instanceof FormData);
+    if (isFormData && bienSauve.get('id')) {
+      await biensApi.update(bienSauve.get('id'), bienSauve, { headers: { 'Content-Type': 'multipart/form-data' } });
+      // On ne peut pas cloner un FormData directement, on recharge après
+      bienCreeRes = {};
+    } else if (isFormData) {
+      const res = await biensApi.create(bienSauve, { headers: { 'Content-Type': 'multipart/form-data' } });
+      bienCreeRes = res.data;
+    } else if (bienSauve.id) {
+      await biensApi.update(bienSauve.id, bienSauve);
+      // Recharge le bien depuis l’API pour avoir l'image à jour
+      const res = await biensApi.get(bienSauve.id);
+      bienCreeRes = res.data;
     } else {
-      await axios.post('/api/biens', bienSauve)
+      const res = await biensApi.create(bienSauve);
+      bienCreeRes = res.data;
     }
-    fermerFormulaire()
-    chargerBiens()
+    bienCree.value = bienCreeRes;
+    // NE PAS fermer la modale ici ! Laisser l'utilisateur uploader des photos
+    // chargerBiens() sera appelé à la fermeture réelle
   } catch (err) {
-    console.error(err)
-    alert("Erreur lors de l'enregistrement")
+    // Affichage détaillé de l'erreur backend pour debug
+    if (err?.response?.data) {
+      console.error('Erreur API:', err.response.data);
+    } else {
+      console.error(err);
+    }
+    alert("Erreur lors de l'enregistrement");
   }
 }
 
@@ -231,14 +261,38 @@ function confirmerSuppression(bien) {
 }
 
 async function supprimerBien() {
+  suppressionLoading.value = true
   try {
-    await axios.delete(`/api/biens/${bienSuppression.value.id}`)
+    await biensApi.remove(bienSuppression.value.id)
     modalSuppressionVisible.value = false
+    bienSuppression.value = null
     chargerBiens()
   } catch (err) {
     console.error(err)
     alert("Erreur lors de la suppression")
+  } finally {
+    suppressionLoading.value = false
   }
+}
+
+async function ouvrirShowBien(bien) {
+  // Si le bien a un id, recharge-le depuis l'API pour avoir l'image à jour
+  if (bien.id) {
+    try {
+      const res = await biensApi.get(bien.id);
+      bienShow.value = res.data;
+    } catch (e) {
+      // En cas d'erreur, fallback sur l'objet local
+      bienShow.value = bien;
+    }
+  } else {
+    bienShow.value = bien;
+  }
+  showBienVisible.value = true;
+}
+function fermerShowBien() {
+  showBienVisible.value = false
+  bienShow.value = null
 }
 
 function badgeStatut(statut) {
@@ -249,6 +303,11 @@ function badgeStatut(statut) {
     'bg-warning text-dark': statut === 'Réservé',
     'bg-info text-dark': statut === 'Loué'
   }
+}
+
+const router = useRouter()
+function allerFormulaireBien() {
+  router.push({ name: 'BienFormAjout' })
 }
 
 onMounted(() => chargerBiens())

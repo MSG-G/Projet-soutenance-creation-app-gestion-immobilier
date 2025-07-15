@@ -188,30 +188,72 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import api from '@/utils/api'
 
-const visits = ref([
-  {
-    id: 1,
-    title: 'Appartement centre-ville',
-    date: '2025-07-10',
-    time: '14:00',
-    location: 'Dakar Plateau',
-    client: 'Fatou Ndiaye',
-    note: 'Souhaite une visite rapide',
-    status: 'pending'
-  }
-])
-
+// Données
+const visits = ref([])
 const selectedStatus = ref('')
 const showModal = ref(false)
-
-const filteredVisits = computed(() => {
-  if (!selectedStatus.value) return visits.value
-  return visits.value.filter(v => v.status === selectedStatus.value)
+const isEditing = ref(false)
+const newVisit = ref({
+id: null,
+title: '',
+date: '',
+time: '',
+location: '',
+client: '',
+note: ''
 })
 
-const newVisit = ref({
+// Helpers
+function translateStatus(apiStatus) {
+switch (apiStatus) {
+  case 'planifiee':
+  case 'pending':
+    return 'pending'
+  case 'confirmee':
+  case 'confirmed':
+    return 'confirmed'
+  case 'annulee':
+  case 'refused':
+    return 'refused'
+  default:
+    return 'pending'
+}
+}
+
+// Fetch des visites
+async function fetchVisits() {
+try {
+  const res = await api.get('/reservations') // TODO : ajuster endpoint si nécessaire
+  visits.value = res.data.map(r => ({
+    id: r.id,
+    title: r.bien?.titre || r.bien?.nom || 'Bien',
+    date: r.date_visite?.split('T')[0] || '',
+    time: r.date_visite?.split('T')[1]?.substring(0, 5) || '',
+    location: r.bien?.adresse || '',
+    client: r.client?.name || '',
+    note: r.message || '',
+    status: translateStatus(r.etat || r.status)
+  }))
+} catch (e) {
+  console.error('Erreur chargement visites', e)
+}
+}
+
+onMounted(fetchVisits)
+
+// Computed
+const filteredVisits = computed(() => {
+return selectedStatus.value
+  ? visits.value.filter(v => v.status === selectedStatus.value)
+  : visits.value
+})
+
+// Modal helpers
+function resetNewVisit() {
+newVisit.value = {
   id: null,
   title: '',
   date: '',
@@ -219,93 +261,90 @@ const newVisit = ref({
   location: '',
   client: '',
   note: ''
-})
-
-const isEditing = ref(false)
-
-function resetNewVisit() {
-  newVisit.value = {
-    id: null,
-    title: '',
-    date: '',
-    time: '',
-    location: '',
-    client: '',
-    note: ''
-  }
+}
 }
 
-const openModal = (visit = null) => {
-  if (visit) {
-    newVisit.value = { ...visit }
-    isEditing.value = true
-  } else {
-    resetNewVisit()
-    isEditing.value = false
-  }
-  showModal.value = true
+function openModal(visit = null) {
+if (visit) {
+  newVisit.value = { ...visit }
+  isEditing.value = true
+} else {
+  resetNewVisit()
+  isEditing.value = false
+}
+showModal.value = true
 }
 
-const closeModal = () => {
-  showModal.value = false
+function closeModal() {
+showModal.value = false
 }
 
-const submitForm = () => {
-  if (!newVisit.value.title || !newVisit.value.date || !newVisit.value.time || !newVisit.value.location || !newVisit.value.client) {
-    alert('Veuillez remplir tous les champs obligatoires.')
-    return
-  }
-
-  if (isEditing.value) {
-    const index = visits.value.findIndex(v => v.id === newVisit.value.id)
-    if (index !== -1) visits.value[index] = { ...newVisit.value }
-  } else {
-    const newId = visits.value.length ? Math.max(...visits.value.map(v => v.id)) + 1 : 1
-    visits.value.push({
-      id: newId,
-      title: newVisit.value.title,
-      date: newVisit.value.date,
-      time: newVisit.value.time,
-      location: newVisit.value.location,
-      client: newVisit.value.client,
-      note: newVisit.value.note,
-      status: 'pending'
-    })
-  }
-
-  closeModal()
+// Création / édition côté front (à adapter avec votre backend)
+async function submitForm() {
+if (!newVisit.value.title || !newVisit.value.date || !newVisit.value.time || !newVisit.value.location || !newVisit.value.client) {
+  alert('Veuillez remplir tous les champs obligatoires.')
+  return
 }
 
-const confirmVisit = id => {
+if (isEditing.value) {
+  // Appel API update si disponible
+  const idx = visits.value.findIndex(v => v.id === newVisit.value.id)
+  if (idx !== -1) visits.value[idx] = { ...newVisit.value }
+} else {
+  // Appel API création si disponible
+  visits.value.push({ ...newVisit.value, id: Date.now(), status: 'pending' })
+}
+
+closeModal()
+}
+
+// Actions statut
+async function confirmVisit(id) {
+try {
+  await api.put(`/reservations/${id}/etat`, { etat: 'confirmee' })
   const v = visits.value.find(v => v.id === id)
   if (v) v.status = 'confirmed'
+} catch (e) {
+  console.error(e)
+}
 }
 
-const refuseVisit = id => {
+async function refuseVisit(id) {
+try {
+  await api.put(`/reservations/${id}/etat`, { etat: 'annulee' })
   const v = visits.value.find(v => v.id === id)
   if (v) v.status = 'refused'
+} catch (e) {
+  console.error(e)
+}
 }
 
-const contactClient = client => {
-  alert(`Contacter le client : ${client} (fonction à implémenter)`)
+function contactClient(client) {
+alert(`Contacter le client : ${client}`)
 }
 
-const statusLabel = status => {
-  switch (status) {
-    case 'pending': return 'En attente'
-    case 'confirmed': return 'Confirmée'
-    case 'refused': return 'Refusée'
-    default: return status
-  }
+// Label & classe helpers
+function statusLabel(status) {
+switch (status) {
+  case 'pending':
+    return 'En attente'
+  case 'confirmed':
+    return 'Confirmée'
+  case 'refused':
+    return 'Refusée'
+  default:
+    return status
+}
 }
 
-const statusTextClass = status => {
-  return {
-    'text-secondary': status === 'pending',
-    'text-success': status === 'confirmed',
-    'text-danger': status === 'refused'
-  }
+function statusTextClass(status) {
+return {
+  'text-secondary': status === 'pending',
+  'text-success': status === 'confirmed',
+  'text-danger': status === 'refused'
 }
+}
+
 </script>
 <style scoped>
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');

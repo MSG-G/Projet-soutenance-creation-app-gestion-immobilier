@@ -2,87 +2,91 @@
   <div class="login-page d-flex align-items-center justify-content-center">
     <div class="login-card shadow-lg animated fadeInDown">
       <h2 class="text-center text-primary mb-4">Connexion</h2>
-
+<div class="mb-3">
+  <router-link to="/public" class="btn btn-outline-secondary w-100">
+    Retour à l'accueil
+  </router-link>
+</div>
       <transition name="fade">
         <div class="error-msg text-danger text-center" v-if="error">{{ error }}</div>
       </transition>
-
-      <div class="form-group mb-3 position-relative">
-        <i class="fas fa-user icon-input"></i>
-        <input
-          type="text"
-          class="form-control"
-          v-model="username"
-          placeholder="Nom d'utilisateur"
-        />
-      </div>
-
-      <div class="form-group mb-3 position-relative">
-        <i class="fas fa-lock icon-input"></i>
-        <input
-          type="password"
-          class="form-control"
-          v-model="password"
-          placeholder="Mot de passe"
-        />
-      </div>
-
-      <div class="d-flex justify-content-between align-items-center mb-3 small">
-        <div>
-          <input type="checkbox" id="remember" v-model="rememberMe" />
-          <label for="remember">Se souvenir de moi</label>
+      <form @submit.prevent="handleLogin">
+        <div class="form-group mb-3 position-relative">
+          <i class="fas fa-user icon-input"></i>
+          <input
+            v-model="email"
+            type="email"
+            class="form-control"
+            placeholder="Email"
+            required
+          />
         </div>
-        <router-link to="/forgot-password" class="text-decoration-none text-primary">
-          Mot de passe oublié ?
-        </router-link>
-      </div>
-
-      <button class="btn btn-primary w-100 mb-3" @click="login">Se connecter</button>
-
-      <div class="text-center small">
-        Vous n'avez pas de compte ?
-        <router-link to="/register" class="text-decoration-none fw-semibold text-primary">Créer un compte</router-link>
-      </div>
+        <div class="form-group mb-3 position-relative">
+          <i class="fas fa-lock icon-input"></i>
+          <input
+            v-model="password"
+            type="password"
+            class="form-control"
+            placeholder="Mot de passe"
+            required
+          />
+        </div>
+        <div class="d-flex justify-content-between align-items-center mb-3 small">
+          <router-link to="/forgot-password" class="text-decoration-none text-primary">
+            Mot de passe oublié ?
+          </router-link>
+        </div>
+        <button class="btn btn-primary w-100 mb-3" type="submit" :disabled="loading">Se connecter</button>
+        <div class="text-center small">
+          Vous n'avez pas de compte ?
+          <router-link to="/register" class="text-decoration-none fw-semibold text-primary">Créer un compte</router-link>
+        </div>
+      </form>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  name: "Login",
-  data() {
-    return {
-      username: "",
-      password: "",
-      rememberMe: false,
-      error: "",
-    };
-  },
-  mounted() {
-    const savedUser = localStorage.getItem("rememberedUser");
-    if (savedUser) {
-      this.username = savedUser;
-      this.rememberMe = true;
-    }
-  },
-  methods: {
-    login() {
-      if (!this.username || !this.password) {
-        this.error = "Tous les champs sont obligatoires.";
-      } else {
-        this.error = "";
-        if (this.rememberMe) {
-          localStorage.setItem("rememberedUser", this.username);
-        } else {
-          localStorage.removeItem("rememberedUser");
-        }
+<script setup>
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { useUserStore } from '../../stores/user'
 
-        alert("Connexion réussie !");
-        // Redirection ou API
-      }
-    },
-  },
-};
+const email = ref('')
+const password = ref('')
+const error = ref('')
+const loading = ref(false)
+const router = useRouter()
+const userStore = useUserStore()
+
+onMounted(() => {
+  // Forcer la remise à zéro des champs même si le navigateur a autofill après un refresh
+  email.value = ''
+  password.value = ''
+})
+
+const handleLogin = async () => {
+  error.value = ''
+  loading.value = true
+  try {
+    const user = await userStore.login(email.value, password.value);
+    if (user.role === 'admin') {
+      router.push('/admin/tableaubord');
+    } else if (user.role === 'agent') {
+      router.push('/agent/biens');
+    } else if (user.role === 'client') {
+      router.push('/client/dashboard');
+    } else {
+      router.push('/public');
+    }
+  } catch (err) {
+    error.value = err;
+  } finally {
+    // Toujours vider les champs pour plus de sécurité et éviter l'autoremplissage
+    email.value = '';
+    password.value = '';
+    loading.value = false;
+  }
+}
 </script>
 
 <style scoped>
