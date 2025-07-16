@@ -1,0 +1,125 @@
+/* === Global Responsive Rules === */
+body {
+  overflow-x: hidden;
+}
+
+/* === Navbar === */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .navbar-brand {
+    margin-bottom: 10px;
+  }
+
+  .navbar-nav {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .nav-item {
+    margin: 5px 0;
+  }
+}
+
+/* === Hero Section (Home.vue) === */
+@media (max-width: 768px) {
+  .hero-section h1 {
+    font-size: 1.6rem;
+    text-align: center;
+  }
+
+  .hero-section p {
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .counter {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+}
+
+
+/* === Vedette Section === */
+@media (max-width: 768px) {
+  .vedette-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+
+  .vedette-cards {
+    grid-template-columns: 1fr !important;
+  }
+
+  .vedette-footer {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+
+  .voir-plus-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* === Footer === */
+@media (max-width: 768px) {
+  footer {
+    text-align: center;
+  }
+
+  .footer-links {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+/* === Cards & Grids === */
+@media (max-width: 768px) {
+  .card,
+  .vedette-card {
+    width: 100% !important;
+    margin-bottom: 20px;
+  }
+
+  .image-container img {
+    height: auto;
+  }
+}
+
+/* === Buttons === */
+@media (max-width: 768px) {
+  .btn,
+  .voir-plus-btn {
+    font-size: 1rem;
+    padding: 10px 20px;
+    width: 100%;
+  }
+}
+/* src/assets/styles/responsive.css */
+
+@media (max-width: 1200px) {
+  .counter-box {
+    font-size: 20px;
+  }
+
+  .hero-center h1 {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    flex-direction: column;
+    padding: 30px 10px;
+  }
+
+  
+}
+
